@@ -52,16 +52,14 @@ const DnahSachSV = () => {
         setModalVisible(!modalVisible)
 
     }
-    const updatelist = (id, newItem) => {
-        newItem = {
-            name: name,
-            address: address,
-            namePhone: namePhone,
-        }
-        const newlist = list.slice(item => item.numberphone != id)
+    const updatelist = (id) => {
+      
+        list[id].name=name;
+        list[id].address=address;  
+        list[id].numberphone=numberphone;
 
-        setData(newlist);
-        setModalVisibleU(!modalVisibleU)
+        setData(list);
+        setModalVisibleU(!modalVisibleU);
     }
 
     // setData(DATA);
@@ -101,7 +99,12 @@ const DnahSachSV = () => {
                         >
                             <Image style={styles.icon} source={{ uri: 'https://tse3.mm.bing.net/th?id=OIP.ADJh9Yqs_bkLz4o8-SZWnwHaHa&pid=Api&P=0&h=180' }}></Image>
                         </Pressable>
-                        <Modal
+                       
+                    </View>
+                }
+                keyExtractor={item => item.numberphone}></FlatList>
+
+<Modal
                             animationType="slide"
                             transparent={true}
                             visible={modalVisible}
@@ -122,8 +125,8 @@ const DnahSachSV = () => {
                                         </Pressable>
                                         <Pressable
                                             style={[styles.button, styles.buttonClose]}
-                                            onPress={() => deletelist(item.numberphone)}>
-                                            <Text style={styles.textStyle}>Xoa</Text>
+                                            onPress={() => setModalVisible(!modalVisible)}>
+                                            <Text style={styles.textStyle}>closed</Text>
                                         </Pressable>
                                     </View>
                                 </View>
@@ -137,9 +140,9 @@ const DnahSachSV = () => {
                             <View style={styles.centeredView}>
                                 <View style={styles.modalView}>
                                     <Text>Update</Text>
-                                    <TextInput onChangeText={text => onChangeText(text)} style={styles.input} placeholder='name' value={DATA[index].name}></TextInput>
-                                    <TextInput onChangeText={text => onChangeText(text)} style={styles.input} placeholder='address' value={DATA[index].address}></TextInput>
-                                    <TextInput onChangeText={text => onChangeText(text)} style={styles.input} placeholder='numberphone' value={DATA[index].numberphone}></TextInput>
+                                    <TextInput onChangeText={text => setname(text)} style={styles.input} placeholder='name' value={DATA[index].name}></TextInput>
+                                    <TextInput onChangeText={text => setaddress(text)} style={styles.input} placeholder='address' value={DATA[index].address}></TextInput>
+                                    <TextInput onChangeText={text => setnumberphone(text)} style={styles.input} placeholder='numberphone' value={DATA[index].numberphone}></TextInput>
                                     <View style={[styles.layoutitem, { borderBottomWidth: 0 }]}>
                                         <Pressable style={styles.button}>
                                             <Text style={styles.mdbtntext}>Update</Text>
@@ -151,11 +154,6 @@ const DnahSachSV = () => {
                                 </View>
                             </View>
                         </Modal>
-                    </View>
-                }
-                keyExtractor={item => item.numberphone}></FlatList>
-
-
         </View>
     )
 }
