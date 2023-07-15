@@ -46,19 +46,38 @@ const DnahSachSV = () => {
     const [address, setaddress] = useState('')
     const [numberphone, setnumberphone] = useState('')
     const [index, setindex] = useState(0);
+    
     const deletelist = (id) => {
         const newlist = list.filter(item => item.numberphone != id)
         setData(newlist);
         setModalVisible(!modalVisible)
-
     }
-    const updatelist = (id) => {
-      
-        list[id].name=name;
-        list[id].address=address;  
-        list[id].numberphone=numberphone;
 
-        setData(list);
+
+    const open=(id) => {
+        const newitem=list.find(item=>item.numberphone == id);
+        setname(newitem.name);
+        setaddress(newitem.address);
+        setnumberphone(newitem.numberphone);
+        setModalVisibleU(!modalVisibleU);
+        return newitem;
+    }
+
+    const updatelist = () => {
+      
+      
+
+       const newlist= [...list];
+
+       for(var i=0; i<newlist.length; i++) {
+       if(newlist[i].numberphone==numberphone){
+        newlist[i].name=name;
+        newlist[i].address=address;
+        newlist[i].numberphone=numberphone;
+
+       }
+    }
+        setData(newlist);
         setModalVisibleU(!modalVisibleU);
     }
 
@@ -92,7 +111,7 @@ const DnahSachSV = () => {
                         </Pressable>
                         <Pressable
                             onPress={() => {
-                                setModalVisibleU(!modalVisibleU)
+                               open(item.numberphone);
                                 setindex(index)
                             }
                             }
@@ -102,7 +121,9 @@ const DnahSachSV = () => {
                        
                     </View>
                 }
-                keyExtractor={item => item.numberphone}></FlatList>
+                keyExtractor={item => item.numberphone}>
+
+                </FlatList>
 
 <Modal
                             animationType="slide"
@@ -120,7 +141,7 @@ const DnahSachSV = () => {
                                     <View>
                                         <Pressable
                                             style={[styles.button, styles.buttonClose]}
-                                            onPress={() => deletelist(item.numberphone)}>
+                                            onPress={() => deletelist(list[index].numberphone)}>
                                             <Text style={styles.textStyle}>Xoa</Text>
                                         </Pressable>
                                         <Pressable
@@ -140,11 +161,12 @@ const DnahSachSV = () => {
                             <View style={styles.centeredView}>
                                 <View style={styles.modalView}>
                                     <Text>Update</Text>
-                                    <TextInput onChangeText={text => setname(text)} style={styles.input} placeholder='name' value={DATA[index].name}></TextInput>
-                                    <TextInput onChangeText={text => setaddress(text)} style={styles.input} placeholder='address' value={DATA[index].address}></TextInput>
-                                    <TextInput onChangeText={text => setnumberphone(text)} style={styles.input} placeholder='numberphone' value={DATA[index].numberphone}></TextInput>
+                                    <TextInput onChangeText={setname} style={styles.input} placeholder='name' value={name}></TextInput>
+                                    <TextInput onChangeText={setaddress} style={styles.input} placeholder='address' value={address}></TextInput>
+                                    <TextInput onChangeText={setnumberphone} style={styles.input} placeholder='numberphone' value={numberphone}></TextInput>
                                     <View style={[styles.layoutitem, { borderBottomWidth: 0 }]}>
-                                        <Pressable style={styles.button}>
+                                        <Pressable
+                                        onPress={()=>updatelist()} style={styles.button}>
                                             <Text style={styles.mdbtntext}>Update</Text>
                                         </Pressable>
                                         <Pressable style={styles.button} onPress={() => setModalVisibleU(!modalVisibleU)}>
